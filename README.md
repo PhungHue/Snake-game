@@ -1,4 +1,3 @@
-
 #include<bits/stdc++.h>
 #include<SDL.h>
 using namespace std;
@@ -16,11 +15,29 @@ SDL_Rect ball = {u, v, 20, 20};
 
 void toado() {
     srand(time(0));
-    u = rand() % (width - 20); // Tọa độ x ngẫu nhiên
-    v = rand() % (hight - 20); // Tọa độ y ngẫu nhiên
-    ball.x = u;
-    ball.y = v;
-    //thêm kiểm tra nếu bóng trùng với thân rn
+    bool trungvoithan = true;
+    while (trungvoithan) {
+        // Sinh tọa độ ngẫu nhiên theo lưới
+        u = rand() % (width - 20); // Tọa độ x ngẫu nhiên
+        v = rand() % (hight - 20); // Tọa độ y ngẫu nhiên
+
+        // Gán vào quả bóng
+        ball.x = u;
+        ball.y = v;
+
+        // Mặc định chưa trùng
+        trungvoithan = false;
+
+        // Kiểm tra từng đốt của rắn
+        for (int i = 0; i < snake.size(); i++) {
+            if (ball.x == snake[i].x && ball.y == snake[i].y) {
+                // Nếu trùng thì đặt lại cờ
+                trungvoithan = true;
+                break; // Thoát khỏi vòng lặp kiểm tra
+            }
+        }
+    }
+
 }
 //kiểm tra khi rắn quay đâuf
 bool test_out2(char kitu)
@@ -164,7 +181,7 @@ int main(int argc, char* argv[]) {
                 for (int i = snake.size() - 1; i > 0; --i) {
                     snake[i].x = snake[i - 1].x;
                     snake[i].y = snake[i - 1].y;
-                }
+                }                                                                                                                                                       
                 snake.front().x -= step; // Di chuyển phần đầu của con rắn
             }
         }
